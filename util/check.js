@@ -4,15 +4,26 @@
 
 const User = require('../models/user');
 
+var checkUser = function (req, res, next) {
+    if (req.user) {
+        res.send('Found in session');
+    }
+    else {
+        res.send('Not in session');
+    }
+}
+
 var checkSession = function (req, res, next) {
     if (req.session && req.session.user) {
         // Refresh user details - pass along
-        User.findOne({user:req.session.user.user})
+        User.findOne({id:req.session.user.id})
         .then(user => {
             if(user) {
                 req.session.user = user;
-                
             }
+        }).catch((e) => {      
+            // Error - send error code
+            res.status(400).send(e);    
         });
 
         // Move on
@@ -34,6 +45,6 @@ var checkAdmin = function (req, res, next) {
 }
 
 // Add admin (as above) but user_level === 1 in .user
-
+module.exports.checkUser = checkUser;
 module.exports.checkSession = checkSession;
 module.exports.checkAdmin = checkAdmin;

@@ -1,10 +1,14 @@
 //Require Mongoose 
 const mongoose = require('mongoose');
 //Define a Schema
-const Schema = mongoose.Schema;
+//const Schema = mongoose.Schema;
 // Create User Schema
-const UserSchema = new mongoose.Schema({   
-      user: { 
+const UserSchema = new mongoose.Schema({
+      id: {
+        type: String,
+        required: true
+      },
+      name: { 
         type: String,
         required: true, 
         minlength : 2,     
@@ -13,18 +17,19 @@ const UserSchema = new mongoose.Schema({
       },
       pw: { 
         type: String,
-        required: true  
+        required: false  
       },
       email: {
         type: String,
-        required: true
+        required: false
       },
       status: {
         type: Number,
         default: 0
       }
     },
-    { 
+  {
+      //choose the collection to find the data from
       collection: 'users'
     }
 );
